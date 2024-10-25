@@ -34,7 +34,7 @@ const Logout = () => {
             {isAuthenticated() ? (
                 <button onClick={handleLogout} className='ml-3'>Logout</button>
             ) : (
-                <Link to="/login" className='ml-3 md:text-lg font-medium md:relative md:top-2'>Login</Link>
+                <Link to="/login" className='md:text-lg font-medium md:relative md:top-2 hover:bg-gray-700 px-3 py-2 rounded-md'>Login</Link>
             )}
         </div>
     );

@@ -58,7 +58,7 @@ const StudentDashboard = () => {
             <div className="container mx-auto pt-20 px-3">
                 <h2 className="text-3xl font-bold text-center text-white mb-6">Students Dashboard</h2>
                 <div className="overflow-x-auto bg-white rounded-lg shadow-lg">
-                    <table className="table-auto w-full bg-slate-900 text-left text-white">
+                    <table className="table-auto w-full bg-slate-900 text-center text-white">
                         <thead className="bg-slate-700">
                             <tr>
                                 <th className="px-4 py-2">Name</th>
@@ -70,7 +70,7 @@ const StudentDashboard = () => {
                             {students.map((student, index) => (
                                 <tr
                                     key={student._id}
-                                    className={`${index % 2 === 0 ? 'bg-slate-800' : 'bg-slate-900'} hover:bg-slate-700`}
+                                    className={`${index % 2 === 0 ? 'bg-slate-800' : 'bg-slate-900'} hover:bg-slate-600`}
                                 >
                                     <td className="px-4 py-2">{student.name}</td>
                                     <td className="px-4 py-2">{student.rollNumber}</td>
