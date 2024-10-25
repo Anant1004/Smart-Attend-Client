@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import toast from 'react-hot-toast';
 
 const Logout = () => {
-    const [error, setError] = useState('');
+    const navigate = useNavigate(); 
 
     const isAuthenticated = () => {
         const cookies = document.cookie.split(';');
@@ -15,22 +16,21 @@ const Logout = () => {
         try {
             const response = await axios.get(
                 'http://localhost:4000/logout', 
-                { withCredentials: true } 
+                { withCredentials: true }
             );
-            console.log(response);
-            console.log(response.data.message);
+            toast.success(response.data.message || 'Logged out successfully!');
+            navigate('/'); 
         } catch (error) {
             if (error.response) {
-                setError(error.response.data.message);
+                toast.error(error.response.data.message || 'Failed to logout.');
             } else {
-                setError('Error occurred during logout. Please try again.');
+                toast.error('Error occurred during logout. Please try again.');
             }
         }
     };
 
     return (
         <div>
-            {error && <p style={{ color: 'red' }}>{error}</p>}
             {isAuthenticated() ? (
                 <button onClick={handleLogout} className='ml-3'>Logout</button>
             ) : (

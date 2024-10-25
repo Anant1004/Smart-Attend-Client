@@ -1,33 +1,51 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Navbar from '../components/Navbar';
+import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-hot-toast'; 
 
 const StudentDashboard = () => {
     const [students, setStudents] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const navigate = useNavigate(); 
 
     useEffect(() => {
+        const checkAuthToken = () => {
+            const token = document.cookie.split('; ').find(row => row.startsWith('token='));
+            return token ? true : false;
+        };
+
         const fetchStudents = async () => {
+            if (!checkAuthToken()) {
+                toast.error('You must log in to access the dashboard.');
+                navigate('/login');
+                return; 
+            }
+
             try {
                 const response = await axios.get('http://localhost:4000/students', {
                     withCredentials: true 
                 });
+
                 if (Array.isArray(response.data)) {
                     setStudents(response.data);
+                    toast.success('Students fetched successfully!');
                 } else {
                     setError('Unexpected response format');
+                    toast.error('Unexpected response format');
                 }
                 setLoading(false);
             } catch (err) {
-                console.error('API error:', err.response ? err.response.data : err.message); 
+                console.error('API error:', err.response ? err.response.data : err.message);
                 setError('Error fetching students');
+                toast.error('Error fetching students'); 
                 setLoading(false);
             }
         };
 
         fetchStudents();
-    }, []);
+    }, [navigate]);
 
     if (loading) {
         return <p>Loading...</p>;

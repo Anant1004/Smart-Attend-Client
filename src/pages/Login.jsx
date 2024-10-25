@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import Navbar from '../components/Navbar';
+import toast from 'react-hot-toast';
+import { Link, useNavigate } from 'react-router-dom'; 
 
 const Login = () => {
     const [formData, setFormData] = useState({
@@ -8,10 +10,9 @@ const Login = () => {
         password: '',
         authNumber: '',
     });
-
+    
     const [role, setRole] = useState('student');
-    const [error, setError] = useState('');
-    const [successMessage, setSuccessMessage] = useState('');
+    const navigate = useNavigate(); 
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -24,8 +25,6 @@ const Login = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setError('');
-        setSuccessMessage('');
 
         try {
             const response = await axios.post(
@@ -33,14 +32,20 @@ const Login = () => {
                 formData,
                 { withCredentials: true }
             );
-            setSuccessMessage(response.data.message);
+            toast.success(response.data.message || 'Logged in successfully!');
+            if (response.data.role === 'teacher') {
+                navigate('/teacherDashboard'); 
+            } else {
+                navigate('/studentDashboard'); 
+            }
         } catch (error) {
             if (error.response) {
-                setError(error.response.data.message);
+                toast.error(error.response.data.message || 'Failed to login.');
             } else {
-                setError('Something went wrong. Please try again.');
+                toast.error('Something went wrong. Please try again.');
             }
         }
+
         setFormData({
             email: '',
             password: '',
@@ -50,12 +55,9 @@ const Login = () => {
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-slate-900">
-            <Navbar/>
+            <Navbar />
             <div className="bg-slate-900 shadow-md rounded-lg p-8 max-w-md w-full text-white">
-                <h1 className="text-2xl font-semibold mb-6 text-center ">Login</h1>
-
-                {error && <p className="text-red-600 mb-4">{error}</p>}
-                {successMessage && <p className="text-green-600 mb-4">{successMessage}</p>}
+                <h1 className="text-2xl font-semibold mb-6 text-center">Login</h1>
 
                 <form onSubmit={handleSubmit}>
                     <div className="mb-4">
@@ -108,14 +110,11 @@ const Login = () => {
                             />
                         </div>
                     )}
-
-                    <button
-                        type="submit"
-                        className="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
-                    >
-                        Login
-                    </button>
+                    <button type="submit" className="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">Login</button>
                 </form>
+                <p className="mt-4 text-center text-white">
+                    Don't have an account? <Link to="/signup" className="text-blue-500 hover:underline">Sign up</Link>
+                </p>
             </div>
         </div>
     );

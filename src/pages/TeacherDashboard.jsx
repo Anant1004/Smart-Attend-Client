@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Navbar from '../components/Navbar';
+import toast from 'react-hot-toast'; 
 
 const TeacherDashboard = () => {
     const [students, setStudents] = useState([]);
@@ -19,6 +20,7 @@ const TeacherDashboard = () => {
             } catch (err) {
                 setError('Error fetching students');
                 setLoading(false);
+                toast.error('Error fetching students'); 
             }
         };
 
@@ -44,10 +46,10 @@ const TeacherDashboard = () => {
                 { withCredentials: true }
             );
 
-            alert('Attendance submitted successfully!');
+            toast.success('Attendance submitted successfully!'); 
         } catch (err) {
             console.error(err.response?.data || err.message);
-            alert(err.response?.data?.message || 'Error submitting attendance');
+            toast.error(err.response?.data?.message || 'Error submitting attendance'); 
         }
     };
 
