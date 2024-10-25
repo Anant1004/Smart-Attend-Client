@@ -1,11 +1,34 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Navbar from '../components/Navbar';
 import toast from 'react-hot-toast';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import useAuth from '../hooks/Tokencheck';
 
 const Message = () => {
     const [message, setMessage] = useState('');
     const [duration, setDuration] = useState('');
+    const [messages, setMessages] = useState([]);
+    const navigate = useNavigate();
+    const { checkAuthToken} = useAuth();
+
+    const fetchMessages = async () => {
+        if (!checkAuthToken()) {
+            toast.error('You must log in to access the dashboard.');
+            navigate('/login');
+            return; 
+        }
+        try {
+            const response = await axios.get('http://localhost:4000/messages', { withCredentials: true });
+            setMessages(response.data.messages); 
+        } catch (error) {
+            toast.error('Failed to fetch messages.');
+        }
+    };
+
+    useEffect(() => {
+        fetchMessages(); 
+    }, []);
 
     const handleMessageChange = (e) => {
         setMessage(e.target.value);
@@ -26,9 +49,9 @@ const Message = () => {
                 );
 
                 toast.success(response.data.message || 'Message created successfully!');
-
                 setMessage('');
                 setDuration('');
+                fetchMessages();
             } catch (error) {
                 if (error.response) {
                     toast.error(error.response.data.message || 'Failed to create message.');
@@ -72,6 +95,24 @@ const Message = () => {
                             Post
                         </button>
                     </form>
+                </div>
+            </div>
+
+            <div className='p-3'>
+                <h2 className='text-center text-[1.5rem] mb-4'>Active Messages</h2>
+                <div className='max-w-md mx-auto p-4 bg-slate-800 rounded-lg shadow-md'>
+                    {messages.length > 0 ? (
+                        messages.map((msg) => (
+                            <div key={msg._id} className='mb-4 p-2 bg-slate-700 rounded-lg'>
+                                <p>{msg.message}</p>
+                                <p className='text-sm text-gray-400'>
+                                    Valid Until : {msg.duration} minutes
+                                </p>
+                            </div>
+                        ))
+                    ) : (
+                        <p className='text-center text-gray-400'>No messages available.</p>
+                    )}
                 </div>
             </div>
         </div>

@@ -1,16 +1,26 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Navbar from '../components/Navbar';
-import toast from 'react-hot-toast'; 
+import toast from 'react-hot-toast';
+import useAuth from '../hooks/Tokencheck';
+import { useNavigate } from 'react-router-dom';
+
 
 const TeacherDashboard = () => {
     const [students, setStudents] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [attendance, setAttendance] = useState({});
+    const navigate = useNavigate();
+    const { checkAuthToken} = useAuth();
 
     useEffect(() => {
         const fetchStudents = async () => {
+            if (!checkAuthToken()) {
+                toast.error('You must log in to access the dashboard.');
+                navigate('/login');
+                return; 
+            }
             try {
                 const response = await axios.get('http://localhost:4000/students', {
                     withCredentials: true, 

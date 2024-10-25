@@ -2,20 +2,17 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Navbar from '../components/Navbar';
 import { useNavigate } from 'react-router-dom';
-import { toast } from 'react-hot-toast'; 
+import { toast } from 'react-hot-toast';
+import useAuth from '../hooks/Tokencheck';
 
 const StudentDashboard = () => {
     const [students, setStudents] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const navigate = useNavigate(); 
+    const { checkAuthToken} = useAuth();
 
     useEffect(() => {
-        const checkAuthToken = () => {
-            const token = document.cookie.split('; ').find(row => row.startsWith('token='));
-            return token ? true : false;
-        };
-
         const fetchStudents = async () => {
             if (!checkAuthToken()) {
                 toast.error('You must log in to access the dashboard.');
