@@ -25,7 +25,7 @@ const Signup = () => {
         e.preventDefault();
 
         try {
-            const response = await axios.post(`${apiUrl}/signup`, formData, { withCredentials: true });
+            const response = await axios.post(`${apiUrl}/signup`, formData);
             toast.success(response.data.message || 'Signup successful!');
             navigate('/login'); 
         } catch (error) {
