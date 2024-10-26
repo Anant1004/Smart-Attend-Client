@@ -21,7 +21,7 @@ const StudentDashboard = () => {
             }
 
             try {
-                const response = await axios.get('http://localhost:4000/students', {
+                const response = await axios.get(`${import.meta.env.VITE_API_URL}/students`, {
                     withCredentials: true 
                 });
 

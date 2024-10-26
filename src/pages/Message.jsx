@@ -19,7 +19,7 @@ const Message = () => {
             return; 
         }
         try {
-            const response = await axios.get('http://localhost:4000/messages', { withCredentials: true });
+            const response = await axios.get(`${import.meta.env.VITE_API_URL}/messages`, { withCredentials: true });
             setMessages(response.data.messages); 
         } catch (error) {
             toast.error('Failed to fetch messages.');
@@ -43,7 +43,7 @@ const Message = () => {
         if (message.trim() && duration) {
             try {
                 const response = await axios.post(
-                    'http://localhost:4000/messages',
+                    `${import.meta.env.VITE_API_URL}/messages`,
                     { message, duration },
                     { withCredentials: true }
                 );

@@ -15,7 +15,7 @@ const Logout = () => {
     const handleLogout = async () => {
         try {
             const response = await axios.get(
-                'http://localhost:4000/logout', 
+                `${import.meta.env.VITE_API_URL}/logout`, 
                 { withCredentials: true }
             );
             toast.success(response.data.message || 'Logged out successfully!');

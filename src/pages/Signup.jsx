@@ -24,7 +24,7 @@ const Signup = () => {
         e.preventDefault();
 
         try {
-            const response = await axios.post('http://localhost:4000/signup', formData, { withCredentials: true });
+            const response = await axios.post(`${import.meta.env.VITE_API_URL}/signup`, formData, { withCredentials: true });
             toast.success(response.data.message || 'Signup successful!');
             navigate('/login'); 
         } catch (error) {
