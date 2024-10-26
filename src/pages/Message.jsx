@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Navbar from '../components/Navbar';
 import toast from 'react-hot-toast';
-import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import useAuth from '../hooks/Tokencheck';
 const apiUrl = import.meta.env.VITE_API_URL;
 
 
@@ -11,15 +9,8 @@ const Message = () => {
     const [message, setMessage] = useState('');
     const [duration, setDuration] = useState('');
     const [messages, setMessages] = useState([]);
-    const navigate = useNavigate();
-    const { checkAuthToken} = useAuth();
-
+    
     const fetchMessages = async () => {
-        if (!checkAuthToken()) {
-            toast.error('log in to access this !!.');
-            navigate('/login');
-            return; 
-        }
         try {
             const response = await axios.get(`${apiUrl}/messages`, { withCredentials: true });
             setMessages(response.data.messages); 

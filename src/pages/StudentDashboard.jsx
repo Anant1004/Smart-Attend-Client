@@ -3,7 +3,6 @@ import axios from 'axios';
 import Navbar from '../components/Navbar';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
-import useAuth from '../hooks/Tokencheck';
 const apiUrl = import.meta.env.VITE_API_URL;
 
 const StudentDashboard = () => {
@@ -11,16 +10,9 @@ const StudentDashboard = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const navigate = useNavigate(); 
-    const { checkAuthToken} = useAuth();
 
     useEffect(() => {
         const fetchStudents = async () => {
-            if (!checkAuthToken()) {
-                toast.error('log in to access this !!');
-                navigate('/login');
-                return; 
-            }
-
             try {
                 const response = await axios.get(`${apiUrl}/students`, {
                     withCredentials: true 
@@ -33,11 +25,11 @@ const StudentDashboard = () => {
                     setError('Unexpected response format');
                     toast.error('Unexpected response format');
                 }
-                setLoading(false);
             } catch (err) {
                 console.error('API error:', err.response ? err.response.data : err.message);
                 setError('Error fetching students');
                 toast.error('Error fetching students'); 
+            } finally {
                 setLoading(false);
             }
         };

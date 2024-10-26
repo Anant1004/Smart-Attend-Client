@@ -2,17 +2,11 @@ import React from 'react';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
-const apiUrl = import.meta.env.VITE_API_URL;
 
+const apiUrl = import.meta.env.VITE_API_URL;
 
 const Logout = () => {
     const navigate = useNavigate(); 
-
-    const isAuthenticated = () => {
-        const cookies = document.cookie.split(';');
-        const token = cookies.find(cookie => cookie.trim().startsWith('token='));
-        return !!token;
-    };
 
     const handleLogout = async () => {
         try {
@@ -33,11 +27,9 @@ const Logout = () => {
 
     return (
         <div>
-            {isAuthenticated() ? (
-                <button onClick={handleLogout} className='ml-3'>Logout</button>
-            ) : (
-                <Link to="/login" className='md:text-lg font-medium md:relative md:top-2 hover:bg-gray-700 px-3 py-2 rounded-md'>Login</Link>
-            )}
+            <button onClick={handleLogout} className='ml-3'>Logout</button>
+            {/* Optionally, you can add a link to login if the user is not authenticated */}
+            {/* <Link to="/login" className='md:text-lg font-medium md:relative md:top-2 hover:bg-gray-700 px-3 py-2 rounded-md'>Login</Link> */}
         </div>
     );
 };

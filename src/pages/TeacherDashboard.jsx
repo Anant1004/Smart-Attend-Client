@@ -2,11 +2,9 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Navbar from '../components/Navbar';
 import toast from 'react-hot-toast';
-import useAuth from '../hooks/Tokencheck';
 import { useNavigate } from 'react-router-dom';
+
 const apiUrl = import.meta.env.VITE_API_URL;
-
-
 
 const TeacherDashboard = () => {
     const [students, setStudents] = useState([]);
@@ -14,29 +12,23 @@ const TeacherDashboard = () => {
     const [error, setError] = useState(null);
     const [attendance, setAttendance] = useState({});
     const navigate = useNavigate();
-    const { checkAuthToken} = useAuth();
 
     useEffect(() => {
         const fetchStudents = async () => {
-            if (!checkAuthToken()) {
-                toast.error('log in to access this !!.');
-                navigate('/login');
-                return; 
-            }
             try {
                 const response = await axios.get(`${apiUrl}/students`, {
                     withCredentials: true, 
                 });
                 setStudents(response.data);
-                setLoading(false);
             } catch (err) {
                 setError('Error fetching students');
-                setLoading(false);
                 toast.error('Error fetching students'); 
+            } finally {
+                setLoading(false); 
             }
         };
 
-        fetchStudents();
+        fetchStudents(); 
     }, []);
 
     const handleAttendanceChange = (rollNumber, status) => {
