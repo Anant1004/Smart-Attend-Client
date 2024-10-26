@@ -4,6 +4,7 @@ import Navbar from '../components/Navbar';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
 import useAuth from '../hooks/Tokencheck';
+const apiUrl = import.meta.env.VITE_API_URL;
 
 const StudentDashboard = () => {
     const [students, setStudents] = useState([]);
@@ -21,7 +22,7 @@ const StudentDashboard = () => {
             }
 
             try {
-                const response = await axios.get(`${import.meta.env.VITE_API_URL}/students`, {
+                const response = await axios.get(`${apiUrl}/students`, {
                     withCredentials: true 
                 });
 

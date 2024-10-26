@@ -4,6 +4,8 @@ import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import useAuth from '../hooks/Tokencheck';
+const apiUrl = import.meta.env.VITE_API_URL;
+
 
 const Message = () => {
     const [message, setMessage] = useState('');
@@ -19,7 +21,7 @@ const Message = () => {
             return; 
         }
         try {
-            const response = await axios.get(`${import.meta.env.VITE_API_URL}/messages`, { withCredentials: true });
+            const response = await axios.get(`${apiUrl}/messages`, { withCredentials: true });
             setMessages(response.data.messages); 
         } catch (error) {
             toast.error('Failed to fetch messages.');
@@ -43,7 +45,7 @@ const Message = () => {
         if (message.trim() && duration) {
             try {
                 const response = await axios.post(
-                    `${import.meta.env.VITE_API_URL}/messages`,
+                    `${apiUrl}/messages`,
                     { message, duration },
                     { withCredentials: true }
                 );

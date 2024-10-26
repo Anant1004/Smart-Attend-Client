@@ -3,6 +3,7 @@ import axios from 'axios';
 import Navbar from '../components/Navbar';
 import toast from 'react-hot-toast';
 import { Link, useNavigate } from 'react-router-dom'; 
+const apiUrl = import.meta.env.VITE_API_URL;
 
 const Login = () => {
     const [formData, setFormData] = useState({
@@ -28,7 +29,7 @@ const Login = () => {
 
         try {
             const response = await axios.post(
-                `${import.meta.env.VITE_API_URL}/login`,
+                `${apiUrl}/login`,
                 formData,
                 { withCredentials: true }
             );

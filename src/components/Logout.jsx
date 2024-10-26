@@ -2,6 +2,8 @@ import React from 'react';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
+const apiUrl = import.meta.env.VITE_API_URL;
+
 
 const Logout = () => {
     const navigate = useNavigate(); 
@@ -15,7 +17,7 @@ const Logout = () => {
     const handleLogout = async () => {
         try {
             const response = await axios.get(
-                `${import.meta.env.VITE_API_URL}/logout`, 
+                `${apiUrl}/logout`, 
                 { withCredentials: true }
             );
             toast.success(response.data.message || 'Logged out successfully!');

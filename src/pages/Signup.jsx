@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import Navbar from '../components/Navbar';
 import toast from 'react-hot-toast';
-import { useNavigate, Link } from 'react-router-dom'; 
+import { useNavigate, Link } from 'react-router-dom';
+const apiUrl = import.meta.env.VITE_API_URL;
 
 const Signup = () => {
     const [formData, setFormData] = useState({
@@ -24,7 +25,7 @@ const Signup = () => {
         e.preventDefault();
 
         try {
-            const response = await axios.post(`${import.meta.env.VITE_API_URL}/signup`, formData, { withCredentials: true });
+            const response = await axios.post(`${apiUrl}/signup`, formData, { withCredentials: true });
             toast.success(response.data.message || 'Signup successful!');
             navigate('/login'); 
         } catch (error) {
