@@ -9,6 +9,7 @@ const apiUrl = import.meta.env.VITE_API_URL;
 const Signup = () => {
     const { register, handleSubmit, formState: { errors }, reset } = useForm();
     const [loading, setLoading] = useState(false);
+    const [selectedRole, setSelectedRole] = useState('student');
     const navigate = useNavigate();
 
     const onSubmit = async (data) => {
@@ -73,23 +74,26 @@ const Signup = () => {
                         <select
                             {...register('role')}
                             className="w-full px-3 py-2 rounded-lg text-black outline-none"
+                            onChange={(e) => setSelectedRole(e.target.value)}
                         >
                             <option value="student">Student</option>
                             <option value="teacher">Teacher</option>
                         </select>
                     </div>
 
-                    <div className="mb-4">
-                        <label className="block mb-2">Roll Number:</label>
-                        <input
-                            type="text"
-                            {...register('rollNumber', {
-                                required: formData => formData.role === 'student' || "Roll Number is required for students"
-                            })}
-                            className="w-full px-3 py-2 rounded-lg text-black outline-none"
-                        />
-                        {errors.rollNumber && <p className="text-red-500">{errors.rollNumber.message}</p>}
-                    </div>
+                    {selectedRole === 'student' && ( 
+                        <div className="mb-4">
+                            <label className="block mb-2">Roll Number:</label>
+                            <input
+                                type="text"
+                                {...register('rollNumber', {
+                                    required: "Roll Number is required for students"
+                                })}
+                                className="w-full px-3 py-2 rounded-lg text-black outline-none"
+                            />
+                            {errors.rollNumber && <p className="text-red-500">{errors.rollNumber.message}</p>}
+                        </div>
+                    )}
 
                     <button
                         type="submit"
