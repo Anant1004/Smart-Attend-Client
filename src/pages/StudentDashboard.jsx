@@ -3,6 +3,7 @@ import axios from 'axios';
 import Navbar from '../components/Navbar';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
+
 const apiUrl = import.meta.env.VITE_API_URL;
 
 const StudentDashboard = () => {
@@ -26,9 +27,14 @@ const StudentDashboard = () => {
                     toast.error('Unexpected response format');
                 }
             } catch (err) {
-                console.error('API error:', err.response ? err.response.data : err.message);
-                setError('Error fetching students');
-                toast.error('Error fetching students'); 
+                console.error('API error:', err.response ? err.response.data : err.message);                
+                if (err.response && err.response.status === 401) {
+                    toast.error('You are not authorized. Please log in.');
+                    navigate('/login');
+                } else {
+                    setError('Error fetching students');
+                    toast.error('Error fetching students'); 
+                }
             } finally {
                 setLoading(false);
             }

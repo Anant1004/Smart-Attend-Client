@@ -75,39 +75,47 @@ const TeacherDashboard = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {students.map((student, index) => (
-                                <tr
-                                    key={student._id}
-                                    className={`${index % 2 === 0 ? 'bg-slate-800' : 'bg-slate-900'} hover:bg-slate-700`}
-                                >
-                                    <td className="px-4 py-2">{student.name}</td>
-                                    <td className="px-4 py-2">{student.rollNumber}</td>
-                                    <td className="px-4 py-2">
-                                        <div className="flex space-x-2">
-                                            <button
-                                                onClick={() => handleAttendanceChange(student.rollNumber, 'present')}
-                                                className={`px-4 py-2 rounded ${
-                                                    attendance[student.rollNumber] === 'present'
-                                                        ? 'bg-green-500'
-                                                        : 'bg-gray-500'
-                                                } hover:bg-green-400`}
-                                            >
-                                                Present
-                                            </button>
-                                            <button
-                                                onClick={() => handleAttendanceChange(student.rollNumber, 'absent')}
-                                                className={`px-4 py-2 rounded ${
-                                                    attendance[student.rollNumber] === 'absent'
-                                                        ? 'bg-red-500'
-                                                        : 'bg-gray-500'
-                                                } hover:bg-red-400`}
-                                            >
-                                                Absent
-                                            </button>
-                                        </div>
+                            {students.length === 0 ? (
+                                <tr>
+                                    <td colSpan="3" className="px-4 py-2 text-center text-red-500">
+                                        No students present
                                     </td>
                                 </tr>
-                            ))}
+                            ) : (
+                                students.map((student, index) => (
+                                    <tr
+                                        key={student._id}
+                                        className={`${index % 2 === 0 ? 'bg-slate-800' : 'bg-slate-900'} hover:bg-slate-700`}
+                                    >
+                                        <td className="px-4 py-2">{student.name}</td>
+                                        <td className="px-4 py-2">{student.rollNumber}</td>
+                                        <td className="px-4 py-2">
+                                            <div className="flex space-x-2">
+                                                <button
+                                                    onClick={() => handleAttendanceChange(student.rollNumber, 'present')}
+                                                    className={`px-4 py-2 rounded ${
+                                                        attendance[student.rollNumber] === 'present'
+                                                            ? 'bg-green-500'
+                                                            : 'bg-gray-500'
+                                                    } hover:bg-green-400`}
+                                                >
+                                                    Present
+                                                </button>
+                                                <button
+                                                    onClick={() => handleAttendanceChange(student.rollNumber, 'absent')}
+                                                    className={`px-4 py-2 rounded ${
+                                                        attendance[student.rollNumber] === 'absent'
+                                                            ? 'bg-red-500'
+                                                            : 'bg-gray-500'
+                                                    } hover:bg-red-400`}
+                                                >
+                                                    Absent
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                ))
+                            )}
                         </tbody>
                     </table>
                 </div>
@@ -122,6 +130,7 @@ const TeacherDashboard = () => {
             </div>
         </div>
     );
+    
 };
 
 export default TeacherDashboard;

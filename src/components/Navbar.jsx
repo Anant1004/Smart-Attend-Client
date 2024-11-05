@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import Logout from '../components/Logout'; 
+import AuthButton from '../components/AuthButton'; 
 
 const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -59,7 +59,7 @@ const Navbar = () => {
                                 <Link to="/about" className="px-3 py-2 rounded-md text-lg font-medium hover:bg-gray-700">About</Link>
                                 <Link to="/studentDashboard" className="px-3 py-2 rounded-md text-lg font-medium hover:bg-gray-700">Student</Link>
                                 <Link to="/messages" className="px-3 py-2 rounded-md text-lg font-medium hover:bg-gray-700">Notice</Link>
-                                <Logout />
+                                <AuthButton />
                             </div>
                         </div>
                     </div>
@@ -72,7 +72,7 @@ const Navbar = () => {
                         <Link to="/about" className="block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-700">About</Link>
                         <Link to="/studentDashboard" className="block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-700">Student</Link>
                         <Link to="/messages" className="block px-3 py-2 rounded-md text-base font-medium hover:bg-gray-700">Notice</Link>
-                        <Logout />
+                        <AuthButton />
                     </div>
                 </div>
             )}

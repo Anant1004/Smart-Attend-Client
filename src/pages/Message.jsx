@@ -2,20 +2,26 @@ import React, { useState, useEffect } from 'react';
 import Navbar from '../components/Navbar';
 import toast from 'react-hot-toast';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 const apiUrl = import.meta.env.VITE_API_URL;
-
 
 const Message = () => {
     const [message, setMessage] = useState('');
     const [duration, setDuration] = useState('');
     const [messages, setMessages] = useState([]);
-    
+    const navigate = useNavigate(); // Add useNavigate to handle navigation
+
     const fetchMessages = async () => {
         try {
             const response = await axios.get(`${apiUrl}/messages`, { withCredentials: true });
             setMessages(response.data.messages); 
         } catch (error) {
-            toast.error('Failed to fetch messages.');
+            if (error.response && error.response.status === 401) {
+                toast.error('You are not authorized. Please log in.');
+                navigate('/login'); // Redirect to the login page
+            } else {
+                toast.error('Failed to fetch messages.');
+            }
         }
     };
 
